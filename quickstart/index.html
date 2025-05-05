@@ -146,15 +146,14 @@
         <ol>
 <li>
 <p>Install from source, binary, Docker or Homebrew.</p>
-<pre><code>go get github.com/fabiolb/fabio                     (&gt;= go1.15)
+<pre tabindex="0"><code>go get github.com/fabiolb/fabio                     (&gt;= go1.15)
 
 brew install fabio                                  (OSX/macOS stable)
 
 docker pull fabiolb/fabio                           (Docker)
 
 https://github.com/fabiolb/fabio/releases           (pre-built binaries)
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Register your service in Consul.</p>
 <p>Make sure that each instance registers with a unique <code>ServiceID</code> and a service name <strong>without spaces</strong>.</p>
@@ -170,33 +169,31 @@ and you need to add a separate <code>urlprefix-</code> tag for every <code>host/
 <p>For example, if your service handles <code>/user</code> and <code>/product</code> then add two tags <code>urlprefix-/user</code> and <code>urlprefix-/product</code>.
 You can register as many prefixes as you want.</p>
 <p>fabio can forward HTTP, HTTPS and TCP traffic. Below are some configuration examples:</p>
-<pre><code># HTTP/S examples
+<pre tabindex="0"><code># HTTP/S examples
 # Make sure the prefix for HTTP routes contains at least one slash (/).
 urlprefix-/css                                     # path route
 urlprefix-i.com/static                             # host specific path route
 urlprefix-mysite.com/                              # host specific catch all route
-urlprefix-/foo/bar strip=/foo                      # path stripping (forward '/bar' to upstream)
-urlprefix-/bar prepend=/foo                        # path prepending (forward '/foo/bar' to upstream)
+urlprefix-/foo/bar strip=/foo                      # path stripping (forward &#39;/bar&#39; to upstream)
+urlprefix-/bar prepend=/foo                        # path prepending (forward &#39;/foo/bar&#39; to upstream)
 urlprefix-/foo/bar proto=https                     # HTTPS upstream
 urlprefix-/foo/bar proto=https tlsskipverify=true  # HTTPS upstream and self-signed cert
 
 # TCP examples
 urlprefix-:3306 proto=tcp                          # route external port 3306
 urlprefix-:3306 proto=tcp pxyproto=true            # enables PROXY protocol on outbount TCP connection
-   
+
 # GRPC/S examples
 urlprefix-/my.service/Method proto=grpc                      # method specific route
 urlprefix-/my.service proto=grpc                             # service specific route
 urlprefix-/my.service proto=grpcs                            # TLS upstream
 urlprefix-/my.service proto=grpcs grpcservername=my.service  # TLS upstream with servername override
 urlprefix-/my.service proto=grpcs tlsskipverify=true         # TLS upstream and self-signed cert
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Start fabio without a config file</p>
-<pre><code>$ fabio
-</code></pre><p>``</p>
-<p>This assumes that a Consul agent is running on <code>localhost:8500</code>.</p>
+<pre tabindex="0"><code>$ fabio
+</code></pre><p>This assumes that a Consul agent is running on <code>localhost:8500</code>.</p>
 <p>Watch the log output how fabio picks up the route to your service.</p>
 <p><strong>Note:</strong> For running fabio in Docker <a href="/feature/docker/">look here</a>.</p>
 </li>
@@ -205,14 +202,12 @@ urlprefix-/my.service proto=grpcs tlsskipverify=true         # TLS upstream and 
 </li>
 <li>
 <p>Test that you can access the upstream service via fabio</p>
-<pre><code># for urlprefix-/foo
+<pre tabindex="0"><code># for urlprefix-/foo
 curl -i http://localhost:9999/foo
 
 # for urlprefix-mysite.com/foo
-curl -i -H 'Host: mysite.com' http://localhost:9999/foo
-
-</code></pre><p>``</p>
-</li>
+curl -i -H &#39;Host: mysite.com&#39; http://localhost:9999/foo
+</code></pre></li>
 <li>
 <p>Send all your HTTP traffic to fabio on port <code>9999</code></p>
 </li>
@@ -234,10 +229,10 @@ curl -i -H 'Host: mysite.com' http://localhost:9999/foo
         <div class="row">
           <div class="col-md-6 col-sm-6">
             <p style="line-height: 26px;">
-                Copyright &copy; 2020-2021 Education Networks of America. All rights reserved.</br>
+                Copyright &copy; 2020-2025 Education Networks of America. All rights reserved.</br>
                 Copyright &copy; 2017-2020 Frank Schröder. All rights reserved.</br>
                 Copyright &copy; 2015-2017 eBay Software Foundation.  All rights reserved</br>
-                Last updated on 4 May 2021 14:17
+                Last updated on 5 May 2025 13:59
             </p>
           </div>
           <div class="col-md-6 col-sm-6">

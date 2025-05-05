@@ -96,6 +96,8 @@
       
         <li><a href="https://fabiolb.net/feature/authorization/">Authorization</a></li>
       
+        <li><a href="https://fabiolb.net/feature/bgp/">BGP</a></li>
+      
         <li><a href="https://fabiolb.net/feature/certificate-stores/">Certificate Stores</a></li>
       
         <li><a href="https://fabiolb.net/feature/docker/">Docker Support</a></li>
@@ -197,109 +199,121 @@
       
       <section>
         <h2>Metrics</h2>
-        <p>fabio collects metrics per route and service instance as well as running totals
-to avoid computing large amounts of metrics. The metrics can be send to
+        <p>Fabio collects metrics per route and service instance as well as running totals
+to avoid computing large amounts of metrics. The metrics can be sent to
 <a href="http://www.circonus.com">Circonus</a>, <a href="https://graphiteapp.org">Graphite</a>,
 <a href="https://github.com/etsy/statsd">StatsD</a>, <a href="https://www.datadoghq.com">DataDog</a>
-(via statsd) or stdout. See the <code>metrics.*</code> options in the
-<a href="https://github.com/eBay/fabio/blob/master/fabio.properties">fabio.properties</a>
-file.</p>
+(via statsd - or since v1.6.0 to native protocol with tag support) or stdout. See the <code>metrics.*</code>
+options in the <a href="https://github.com/eBay/fabio/blob/master/fabio.properties">fabio.properties</a>
+file.  Prometheus is also possible, but it works the reverse of the other metrics platforms.
+Instead of pushing data to a metrics server, prometheus expects to poll an endpoint for changes.</p>
+<h3 id="configuring-prometheus-metrics">Configuring Prometheus Metrics</h3>
+<p>To configure prometheus metrics, you need to do the following:</p>
+<ol>
+<li>You must specify that prometheus is the <a href="/ref/metrics.target/">metrics.target</a></li>
+<li>You must configure a listener in <a href="/ref/proxy.addr/">proxy.addr</a> with <code>proto=prometheus</code></li>
+<li>(optional) override the
+<a href="/ref/metrics.prometheus.path/">metrics.prometheus.path</a>,
+<a href="/ref/metrics.prometheus.subsystem/">metrics.prometheus.subsystem</a>,
+and <a href="/ref/metrics.prometheus.buckets/">metrics.prometheus.buckets</a>.</li>
+</ol>
+<h3 id="metrics-info-for-non-tagged-backends-such-as-circonus-and-statsd_raw">Metrics info (for non-tagged backends, such as circonus and statsd_raw)</h3>
 <p>Fabio reports the following metrics:</p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>{route}.rx</code></td>
-<td>timer</td>
-<td>Number of bytes received by fabio for TCP target</td>
-</tr>
-<tr>
-<td><code>{route}.tx</code></td>
-<td>timer</td>
-<td>Number of bytes transmitted by fabio for TCP target</td>
-</tr>
-<tr>
-<td><code>{route}</code></td>
-<td>timer</td>
-<td>Average response time for a route</td>
-</tr>
-<tr>
-<td><code>http.status.code.{code}</code></td>
-<td>timer</td>
-<td>Average response time for all HTTP(S) requests per status code</td>
-</tr>
-<tr>
-<td><code>notfound</code></td>
-<td>counter</td>
-<td>Number of failed HTTP route lookups</td>
-</tr>
-<tr>
-<td><code>requests</code></td>
-<td>timer</td>
-<td>Average response time for all HTTP(S) requests</td>
-</tr>
-<tr>
-<td><code>grpc.requests</code></td>
-<td>timer</td>
-<td>Average response time for all GRPC(S) requests</td>
-</tr>
-<tr>
-<td><code>grpc.noroute</code></td>
-<td>counter</td>
-<td>Number of failed GRPC route lookups</td>
-</tr>
-<tr>
-<td><code>grpc.conn</code></td>
-<td>counter</td>
-<td>Number of established GRPC proxy connections</td>
-</tr>
-<tr>
-<td><code>grpc.status.{code}</code></td>
-<td>timer</td>
-<td>Average response time for all GRPC(S) requests per status code</td>
-</tr>
-<tr>
-<td><code>tcp.conn</code></td>
-<td>counter</td>
-<td>Number of established TCP proxy connections</td>
-</tr>
-<tr>
-<td><code>tcp.connfail</code></td>
-<td>counter</td>
-<td>Number of TCP upstream connection failures</td>
-</tr>
-<tr>
-<td><code>tcp.noroute</code></td>
-<td>counter</td>
-<td>Number of failed TCP upstream route lookups</td>
-</tr>
-<tr>
-<td><code>tcp_sni.conn</code></td>
-<td>counter</td>
-<td>Number of established TCP+SNI proxy connections</td>
-</tr>
-<tr>
-<td><code>tcp_sni.connfail</code></td>
-<td>counter</td>
-<td>Number of failed TCP+SNI proxy connections</td>
-</tr>
-<tr>
-<td><code>tcp_sni.noroute</code></td>
-<td>counter</td>
-<td>Number of failed TCP+SNI upstream route lookups</td>
-</tr>
-<tr>
-<td><code>ws.conn</code></td>
-<td>gauge</td>
-<td>Number of actively open websocket connections</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>{route}.rx</code></td>
+          <td>timer</td>
+          <td>Number of bytes received by fabio for TCP target</td>
+      </tr>
+      <tr>
+          <td><code>{route}.tx</code></td>
+          <td>timer</td>
+          <td>Number of bytes transmitted by fabio for TCP target</td>
+      </tr>
+      <tr>
+          <td><code>{route}</code></td>
+          <td>timer</td>
+          <td>Average response time for a route</td>
+      </tr>
+      <tr>
+          <td><code>http.status.code.{code}</code></td>
+          <td>timer</td>
+          <td>Average response time for all HTTP(S) requests per status code</td>
+      </tr>
+      <tr>
+          <td><code>notfound</code></td>
+          <td>counter</td>
+          <td>Number of failed HTTP route lookups</td>
+      </tr>
+      <tr>
+          <td><code>requests</code></td>
+          <td>timer</td>
+          <td>Average response time for all HTTP(S) requests</td>
+      </tr>
+      <tr>
+          <td><code>grpc.requests</code></td>
+          <td>timer</td>
+          <td>Average response time for all GRPC(S) requests</td>
+      </tr>
+      <tr>
+          <td><code>grpc.noroute</code></td>
+          <td>counter</td>
+          <td>Number of failed GRPC route lookups</td>
+      </tr>
+      <tr>
+          <td><code>grpc.conn</code></td>
+          <td>counter</td>
+          <td>Number of established GRPC proxy connections</td>
+      </tr>
+      <tr>
+          <td><code>grpc.status.{code}</code></td>
+          <td>timer</td>
+          <td>Average response time for all GRPC(S) requests per status code</td>
+      </tr>
+      <tr>
+          <td><code>tcp.conn</code></td>
+          <td>counter</td>
+          <td>Number of established TCP proxy connections</td>
+      </tr>
+      <tr>
+          <td><code>tcp.connfail</code></td>
+          <td>counter</td>
+          <td>Number of TCP upstream connection failures</td>
+      </tr>
+      <tr>
+          <td><code>tcp.noroute</code></td>
+          <td>counter</td>
+          <td>Number of failed TCP upstream route lookups</td>
+      </tr>
+      <tr>
+          <td><code>tcp_sni.conn</code></td>
+          <td>counter</td>
+          <td>Number of established TCP+SNI proxy connections</td>
+      </tr>
+      <tr>
+          <td><code>tcp_sni.connfail</code></td>
+          <td>counter</td>
+          <td>Number of failed TCP+SNI proxy connections</td>
+      </tr>
+      <tr>
+          <td><code>tcp_sni.noroute</code></td>
+          <td>counter</td>
+          <td>Number of failed TCP+SNI upstream route lookups</td>
+      </tr>
+      <tr>
+          <td><code>ws.conn</code></td>
+          <td>gauge</td>
+          <td>Number of actively open websocket connections</td>
+      </tr>
+  </tbody>
 </table>
 <h3 id="legend">Legend</h3>
 <h4 id="timer">timer</h4>
@@ -334,10 +348,10 @@ with the <code>metrics.names</code> template defined in
         <div class="row">
           <div class="col-md-6 col-sm-6">
             <p style="line-height: 26px;">
-                Copyright &copy; 2020-2021 Education Networks of America. All rights reserved.</br>
+                Copyright &copy; 2020-2025 Education Networks of America. All rights reserved.</br>
                 Copyright &copy; 2017-2020 Frank Schröder. All rights reserved.</br>
                 Copyright &copy; 2015-2017 eBay Software Foundation.  All rights reserved</br>
-                Last updated on 4 May 2021 14:17
+                Last updated on 5 May 2025 13:59
             </p>
           </div>
           <div class="col-md-6 col-sm-6">

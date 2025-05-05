@@ -96,6 +96,8 @@
       
         <li><a href="https://fabiolb.net/feature/authorization/">Authorization</a></li>
       
+        <li><a href="https://fabiolb.net/feature/bgp/">BGP</a></li>
+      
         <li><a href="https://fabiolb.net/feature/certificate-stores/">Certificate Stores</a></li>
       
         <li><a href="https://fabiolb.net/feature/docker/">Docker Support</a></li>
@@ -201,17 +203,52 @@
 RPC on a given port to services which advertise rpc service or method. To use GRPC
 proxy support the service needs to advertise <code>urlprefix-/my.service/Method proto=grpc</code> in
 Consul. In addition, fabio needs to be configured with a grpc listener:</p>
-<pre><code>fabio -proxy.addr ':1234;proto=grpc'
+<pre tabindex="0"><code>fabio -proxy.addr &#39;:1234;proto=grpc&#39;
 </code></pre><p>As per the HTTP/2 spec, the host header is not required, so host matching is not supported for GRPC proxying.</p>
-<p>GRPC proxy support can be combined with <a href="/feature/certificate-stores/">Certificate Stores</a> to provide TLS termination on fabio. Configure <code>proxy.addr</code> with <code>proto=grpcs</code>.</p>
-<pre><code>fabio -proxy.cs 'cs=ssl;type=path;path=/etc/ssl' -proxy.addr ':1234;proto=grpcs;cs=ssl'
+<p>To route to a particular grpc service(s), set the &lsquo;dsthost&rsquo;=&lsquo;name&rsquo; in metadata, the grpc traffic will be routed to the service advertising <code>urlprefix-name/my.service/Method proto=grpc</code>.</p>
+<p>For example in Go grpc request:</p>
+<pre tabindex="0"><code>	md := metadata.Pairs(&#34;dsthost&#34;, &#34;testonly&#34;)
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+</code></pre><p>To make RPC using the context with the metadata will try to access the service with tag</p>
+<pre tabindex="0"><code> urlprefix-testonly/my.service/Method proto=grpc
+</code></pre><p>first, if no such service exits, fall back to the service with tag</p>
+<pre tabindex="0"><code> urlprefix-/my.service/Method proto=grpc
+</code></pre><p>Equivalent metadata in Java:</p>
+<pre tabindex="0"><code>public class GrpcClientHeaderInterceptor implements ClientInterceptor {
+
+    private String dstHost;
+
+    public GrpcClientHeaderInterceptor(String dstHost) {
+        this.dstHost = dstHost;
+    }
+
+    @VisibleForTesting
+    static final Metadata.Key&lt;String&gt; CUSTOM_HEADER_KEY =
+            Metadata.Key.of(&#34;dsthost&#34;, Metadata.ASCII_STRING_MARSHALLER);
+
+    @Override
+    public &lt;ReqT, RespT&gt; ClientCall&lt;ReqT, RespT&gt; interceptCall(MethodDescriptor&lt;ReqT, RespT&gt; method,
+                                                               CallOptions callOptions, Channel next) {
+        ClientCall&lt;ReqT, RespT&gt; call = next.newCall(method, callOptions);
+        return new SimpleForwardingClientCall&lt;ReqT, RespT&gt;(call) {
+            @Override
+            public void start(Listener&lt;RespT&gt; responseListener, Metadata headers) {
+                /* put custom header */
+                headers.put(CUSTOM_HEADER_KEY, &#34;testonly&#34;);
+            }
+
+        };
+    }
+}
+</code></pre><p>GRPC proxy support can be combined with <a href="/feature/certificate-stores/">Certificate Stores</a> to provide TLS termination on fabio. Configure <code>proxy.addr</code> with <code>proto=grpcs</code>.</p>
+<pre tabindex="0"><code>fabio -proxy.cs &#39;cs=ssl;type=path;path=/etc/ssl&#39; -proxy.addr &#39;:1234;proto=grpcs;cs=ssl&#39;
 </code></pre><p>To support TLS upstream servers add the <code>proto=grpcs</code> option to the
 <code>urlprefix-</code> tag. The current implementation uses the clientca specified in the <a href="/feature/certificate-stores/">Certificate Store</a> for the listener. To disable certificate
 validation for a target set the <code>tlsskipverify=true</code> option.</p>
-<pre><code>urlprefix-/foo proto=grpcs
+<pre tabindex="0"><code>urlprefix-/foo proto=grpcs
 urlprefix-/foo proto=grpcs tlsskipverify=true
 </code></pre><p>For TLS upstream servers (when using the consul registry) fabio will direct your traffic to an advertised service IP. If your service certificate does not contain an IP SAN, the certificate verification will fail. You can set the override the server name in the tls config by setting <code>grpcservername=&lt;servername&gt;</code> in the <code>urlprefix-</code> tag.</p>
-<pre><code>urlprefix-/ proto=grpcs grpcservername=my.service.hostname
+<pre tabindex="0"><code>urlprefix-/ proto=grpcs grpcservername=my.service.hostname
 </code></pre>
         
       </section>
@@ -230,10 +267,10 @@ urlprefix-/foo proto=grpcs tlsskipverify=true
         <div class="row">
           <div class="col-md-6 col-sm-6">
             <p style="line-height: 26px;">
-                Copyright &copy; 2020-2021 Education Networks of America. All rights reserved.</br>
+                Copyright &copy; 2020-2025 Education Networks of America. All rights reserved.</br>
                 Copyright &copy; 2017-2020 Frank Schröder. All rights reserved.</br>
                 Copyright &copy; 2015-2017 eBay Software Foundation.  All rights reserved</br>
-                Last updated on 4 May 2021 14:17
+                Last updated on 5 May 2025 13:59
             </p>
           </div>
           <div class="col-md-6 col-sm-6">
