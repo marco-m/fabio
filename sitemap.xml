@@ -212,6 +212,8 @@
   </url><url>
     <loc>https://fabiolb.net/ref/registry.consul.kvpath/</loc>
   </url><url>
+    <loc>https://fabiolb.net/ref/registry.consul.namespace/</loc>
+  </url><url>
     <loc>https://fabiolb.net/ref/registry.consul.noroutehtmlpath/</loc>
   </url><url>
     <loc>https://fabiolb.net/ref/registry.consul.pollinterval/</loc>
@@ -266,8 +268,6 @@
   </url><url>
     <loc>https://fabiolb.net/ref/registry.timeout/</loc>
   </url><url>
-    <loc>https://fabiolb.net/faq/request-tracing/</loc>
-  </url><url>
     <loc>https://fabiolb.net/ref/runtime.gogc/</loc>
   </url><url>
     <loc>https://fabiolb.net/ref/runtime.gomaxprocs/</loc>
@@ -289,6 +289,8 @@
     <loc>https://fabiolb.net/ref/ui.addr/</loc>
   </url><url>
     <loc>https://fabiolb.net/ref/ui.color/</loc>
+  </url><url>
+    <loc>https://fabiolb.net/ref/ui.path/</loc>
   </url><url>
     <loc>https://fabiolb.net/ref/ui.routingtable.source.host/</loc>
   </url><url>

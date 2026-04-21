@@ -75,7 +75,7 @@
       <link>https://fabiolb.net/feature/access-logging/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/feature/access-logging/</guid>
-      <description>&lt;p&gt;Support for writing access logs for HTTP requests&#xA;in the &lt;a href=&#34;https://en.wikipedia.org/wiki/Common_Log_Format&#34;&gt;Common Log Format&lt;/a&gt;&#xA;or the &lt;a href=&#34;https://httpd.apache.org/docs/1.3/logs.html#combined&#34;&gt;Combined Log Format&lt;/a&gt;&#xA;or a custom format to stdout.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Support for writing access logs for HTTP requests&#xA;in the &lt;a href=&#34;https://en.wikipedia.org/wiki/Common_Log_Format&#34;&gt;Common Log Format&lt;/a&gt;&#xA;or the &lt;a href=&#34;https://httpd.apache.org/docs/2.4/logs.html#combined&#34;&gt;Combined Log Format&lt;/a&gt;&#xA;or a custom format to stdout.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Authorization</title>
@@ -600,7 +600,7 @@
       <link>https://fabiolb.net/ref/proxy.localip/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/ref/proxy.localip/</guid>
-      <description>&lt;p&gt;&lt;code&gt;proxy.localip&lt;/code&gt; configures the ip address of the proxy which is added&#xA;to the Header configured by &lt;a href=&#34;https://fabiolb.net/ref/header.clientip/&#34;&gt;&lt;code&gt;header.clientip&lt;/code&gt;&lt;/a&gt; and to the &lt;code&gt;Forwarded: by=&lt;/code&gt; attribute.&lt;/p&gt;&#xA;&lt;p&gt;The local non-loopback address is detected during startup&#xA;but can be overwritten with this property.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;proxy.localip =&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;proxy.localip&lt;/code&gt; configures the ip address of the proxy which is added&#xA;to the Header configured by &lt;a href=&#34;https://fabiolb.net/ref/proxy.header.clientip/&#34;&gt;&lt;code&gt;proxy.header.clientip&lt;/code&gt;&lt;/a&gt; and to the &lt;code&gt;Forwarded: by=&lt;/code&gt; attribute.&lt;/p&gt;&#xA;&lt;p&gt;The local non-loopback address is detected during startup&#xA;but can be overwritten with this property.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;proxy.localip =&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
       <title>proxy.matcher</title>
@@ -671,6 +671,13 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/ref/registry.consul.kvpath/</guid>
       <description>&lt;p&gt;&lt;code&gt;registry.consul.kvpath&lt;/code&gt; configures the KV path for manual routes.&lt;/p&gt;&#xA;&lt;p&gt;The Consul KV path is watched for changes which get appended to&#xA;the routing table. This allows for manual overrides and weighted&#xA;round-robin routes.&lt;/p&gt;&#xA;&lt;p&gt;As of version 1.5.7 fabio will treat the kv path as a prefix and&#xA;combine the values of the key itself and all its subkeys in&#xA;alphabetical order.&lt;/p&gt;&#xA;&lt;p&gt;To see all updates you may want to set &lt;a href=&#34;https://fabiolb.net/ref/log.routes.format/&#34;&gt;&lt;code&gt;-log.routes.format&lt;/code&gt;&lt;/a&gt;&#xA;to &lt;code&gt;all&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>registry.consul.namespace</title>
+      <link>https://fabiolb.net/ref/registry.consul.namespace/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://fabiolb.net/ref/registry.consul.namespace/</guid>
+      <description>&lt;p&gt;&lt;code&gt;registry.consul.namespace&lt;/code&gt; configures the consul namespace in which fabio will register itself.&lt;/p&gt;&#xA;&lt;p&gt;Namespaces are a feature only available in the enterprise version of consul. In the open-source&#xA;version or with an empty namespace option fabio will be registered in the default namespace. Only&#xA;services running in the same consul namespace will be picked up by fabio.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;registry.consul.namespace = &#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
       <title>registry.consul.noroutehtmlpath</title>
@@ -862,13 +869,6 @@
       <description>&lt;p&gt;&lt;code&gt;registry.timeout&lt;/code&gt; configures how long fabio tries to connect to the registry&#xA;backend during startup.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;registry.timeout = 10s&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
-      <title>Request Tracing</title>
-      <link>https://fabiolb.net/faq/request-tracing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://fabiolb.net/faq/request-tracing/</guid>
-      <description>&lt;h4 id=&#34;how-do-i-see-which-routes-fabio-is-matching-for-a-request&#34;&gt;How do I see which routes fabio is matching for a request?&lt;/h4&gt;&#xA;&lt;p&gt;To trace how a request is routed you can add a &lt;code&gt;Trace&lt;/code&gt; header with an non-&#xA;empty value which is truncated at 16 characters to keep the log output short.&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ curl -v -H &amp;#39;Trace: abc&amp;#39; -H &amp;#39;Host: foo.com&amp;#39; &amp;#39;http://localhost:9999/bar/baz&amp;#39;&#xA;&#xA;2015/09/28 21:56:26 [TRACE] abc Tracing foo.com/bar/baz&#xA;2015/09/28 21:56:26 [TRACE] abc No match foo.com/bang&#xA;2015/09/28 21:56:26 [TRACE] abc Match foo.com/&#xA;2015/09/28 22:01:34 [TRACE] abc Routing to http://1.2.3.4:8080/&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
-    </item>
-    <item>
       <title>runtime.gogc</title>
       <link>https://fabiolb.net/ref/runtime.gogc/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -922,7 +922,7 @@
       <link>https://fabiolb.net/feature/traffic-shaping/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/feature/traffic-shaping/</guid>
-      <description>&lt;p&gt;fabio allows to control the amount of traffic a set of service instances will&#xA;receive. You can use this feature to direct a fixed percentage of traffic to a&#xA;newer version of an existing service for testing (&amp;ldquo;Canary testing&amp;rdquo;). See&#xA;&lt;a href=&#34;./Routing#manual-overrides&#34;&gt;Manual Overrides&lt;/a&gt; for a complete description of the &lt;code&gt;route weight&lt;/code&gt; command.&lt;/p&gt;&#xA;&lt;p&gt;The following command will allocate 5% of traffic to &lt;code&gt;www.kjca.dev/auth/&lt;/code&gt; to&#xA;all instances of &lt;code&gt;service-b&lt;/code&gt; which match tags &lt;code&gt;version-15&lt;/code&gt; and &lt;code&gt;dc-fra&lt;/code&gt;. This&#xA;is independent of the number of actual instances running. The remaining 95%&#xA;of the traffic will be distributed evenly across the remaining instances&#xA;publishing the same prefix.&lt;/p&gt;</description>
+      <description>&lt;p&gt;fabio allows to control the amount of traffic a set of service instances will&#xA;receive. You can use this feature to direct a fixed percentage of traffic to a&#xA;newer version of an existing service for testing (&amp;ldquo;Canary testing&amp;rdquo;). See&#xA;&lt;a href=&#34;../../cfg&#34;&gt;Config Language&lt;/a&gt; for a complete description of the &lt;code&gt;route weight&lt;/code&gt; command.&lt;/p&gt;&#xA;&lt;p&gt;The following command will allocate 5% of traffic to &lt;code&gt;www.kjca.dev/auth/&lt;/code&gt; to&#xA;all instances of &lt;code&gt;service-b&lt;/code&gt; which match tags &lt;code&gt;version-15&lt;/code&gt; and &lt;code&gt;dc-fra&lt;/code&gt;. This&#xA;is independent of the number of actual instances running. The remaining 95%&#xA;of the traffic will be distributed evenly across the remaining instances&#xA;publishing the same prefix.&lt;/p&gt;</description>
     </item>
     <item>
       <title>ui.access</title>
@@ -946,6 +946,13 @@
       <description>&lt;p&gt;&lt;code&gt;ui.color&lt;/code&gt; configures the background color of the UI.&#xA;Color names are from &lt;a href=&#34;http://materializecss.com/color.html&#34;&gt;http://materializecss.com/color.html&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;ui.color = light-green&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
+      <title>ui.path</title>
+      <link>https://fabiolb.net/ref/ui.path/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://fabiolb.net/ref/ui.path/</guid>
+      <description>&lt;p&gt;&lt;code&gt;ui.path&lt;/code&gt; configures the base path for the UI/API. This allows serving&#xA;the admin UI behind a reverse proxy at a sub-path, e.g. &lt;code&gt;/fabio&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;ui.path =&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
       <title>ui.routingtable.source.host</title>
       <link>https://fabiolb.net/ref/ui.routingtable.source.host/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -964,7 +971,7 @@
       <link>https://fabiolb.net/ref/ui.routingtable.source.newtab/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/ref/ui.routingtable.source.newtab/</guid>
-      <description>&lt;p&gt;&lt;code&gt;ui.routingtable.source.scheme&lt;/code&gt; configures the scheme protocol for the link of the source on the routing table.  This is useful when the scheme is different than the current page&#xA;or to force the traffic to a certain protocol.&lt;/p&gt;&#xA;&lt;p&gt;This is only applicable if the &lt;a href=&#34;https://fabiolb.net/ref/ui.routingtable.source.linkenabled/&#34;&gt;linkenabled&lt;/a&gt; is set to true.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;ui.routingtable.source.scheme = http&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;ui.routingtable.source.newtab&lt;/code&gt; configures if the source link should open in a new tab.&lt;/p&gt;&#xA;&lt;p&gt;This is only applicable if the &lt;a href=&#34;https://fabiolb.net/ref/ui.routingtable.source.linkenabled/&#34;&gt;linkenabled&lt;/a&gt; is set to true.&lt;/p&gt;&#xA;&lt;p&gt;The default is&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;ui.routingtable.source.newtab = true&#xA;&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     <item>
       <title>ui.routingtable.source.port</title>
@@ -1006,7 +1013,7 @@
       <link>https://fabiolb.net/feature/web-ui/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://fabiolb.net/feature/web-ui/</guid>
-      <description>&lt;p&gt;fabio supports a Web UI to examine the current routing table and manage the&#xA;manual overrides. By default it listens on &lt;code&gt;http://0.0.0.0:9998/&lt;/code&gt; which can be&#xA;changed with the &lt;code&gt;ui.addr&lt;/code&gt; option. The &lt;code&gt;ui.title&lt;/code&gt; and &lt;code&gt;ui.color&lt;/code&gt; options allow&#xA;customization of the title and the color of the header bar.&lt;/p&gt;</description>
+      <description>&lt;p&gt;fabio supports a Web UI to examine the current routing table and manage the&#xA;manual overrides. By default it listens on &lt;code&gt;http://0.0.0.0:9998/&lt;/code&gt; which can be&#xA;changed with the &lt;code&gt;ui.addr&lt;/code&gt; option. The &lt;code&gt;ui.title&lt;/code&gt; and &lt;code&gt;ui.color&lt;/code&gt; options allow&#xA;customization of the title and the color of the header bar.&lt;/p&gt;&#xA;&lt;p&gt;The &lt;code&gt;ui.path&lt;/code&gt; option configures a base path for the UI and API, allowing fabio&#xA;to be served behind a reverse proxy at a sub-path (e.g. &lt;code&gt;ui.path = /fabio&lt;/code&gt;).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Websockets</title>

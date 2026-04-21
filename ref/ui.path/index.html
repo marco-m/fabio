@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
 
-    <title>bgp.listenaddresses</title>
+    <title>ui.path</title>
 
     
     <link href="/css/theDocs.all.min.css" rel="stylesheet">
@@ -130,7 +130,7 @@
       
         <li><a href="https://fabiolb.net/ref/bgp.keyfile/">bgp.keyfile</a></li>
       
-        <li><a class="active" href="https://fabiolb.net/ref/bgp.listenaddresses/">bgp.listenaddresses</a></li>
+        <li><a href="https://fabiolb.net/ref/bgp.listenaddresses/">bgp.listenaddresses</a></li>
       
         <li><a href="https://fabiolb.net/ref/bgp.listenport/">bgp.listenport</a></li>
       
@@ -312,7 +312,7 @@
       
         <li><a href="https://fabiolb.net/ref/ui.color/">ui.color</a></li>
       
-        <li><a href="https://fabiolb.net/ref/ui.path/">ui.path</a></li>
+        <li><a class="active" href="https://fabiolb.net/ref/ui.path/">ui.path</a></li>
       
         <li><a href="https://fabiolb.net/ref/ui.routingtable.source.host/">ui.routingtable.source.host</a></li>
       
@@ -364,12 +364,12 @@
 
       
       <section>
-        <h2>bgp.listenaddresses</h2>
-        <p><code>bgp.listenaddresses</code> sets the listen addresses for bgp, separated by comma.</p>
-<p>The default value is</p>
-<pre><code>bgp.listenaddresses = 0.0.0.0
+        <h2>ui.path</h2>
+        <p><code>ui.path</code> configures the base path for the UI/API. This allows serving
+the admin UI behind a reverse proxy at a sub-path, e.g. <code>/fabio</code>.</p>
+<p>The default is</p>
+<pre><code>ui.path =
 </code></pre>
-<p>which listens on all interfaces.</p>
 
         
       </section>
