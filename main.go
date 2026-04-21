@@ -344,7 +344,7 @@ func startServers(cfg *config.Config, stats metrics.Provider) {
 			Requests:        stats.NewHistogram("requests"),
 			Noroute:         notFound,
 			WSConn:          stats.NewGauge("ws.conn"),
-			StatusTimer:     stats.NewHistogram("http.status", "code"),
+			StatusTimer:     stats.NewHistogram("http.status", "code", "service"),
 			RedirectCounter: stats.NewCounter("http.redirect.count", "code"),
 		}
 	}
