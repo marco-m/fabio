@@ -1,6 +1,12 @@
 FROM golang AS build
 
 ARG TARGETARCH
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    git \
+    libcap2-bin \
+    unzip
+
 ARG consul_version=1.22.0
 ADD https://releases.hashicorp.com/consul/${consul_version}/consul_${consul_version}_linux_${TARGETARCH}.zip /usr/local/bin
 RUN cd /usr/local/bin && unzip consul_${consul_version}_linux_${TARGETARCH}.zip consul
@@ -9,7 +15,6 @@ ARG vault_version=1.21.0
 ADD https://releases.hashicorp.com/vault/${vault_version}/vault_${vault_version}_linux_${TARGETARCH}.zip /usr/local/bin
 RUN cd /usr/local/bin && unzip vault_${vault_version}_linux_${TARGETARCH}.zip vault
 
-RUN apt-get update && apt-get install -y git ca-certificates libcap2-bin
 WORKDIR /src
 COPY . .
 RUN go mod tidy
