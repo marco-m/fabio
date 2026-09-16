@@ -31,10 +31,16 @@ func newHTTPProxy(target *url.URL, tr http.RoundTripper, flush time.Duration) ht
 			if xff := req.In.Header.Get("X-Forwarded-For"); xff != "" {
 				req.Out.Header.Set("X-Forwarded-For", xff)
 			}
+			// FIXME(marco) security vulneraibility I think ....
+			xfp := req.In.Header.Get("X-Forwarded-Proto")
 
 			// SetXForwarded will handle X-Forwarded-For (append), X-Forwarded-Host, and X-Forwarded-Proto
 			// Other headers (X-Forwarded-Port, X-Forwarded-Prefix, Forwarded) are already set by addHeaders()
 			req.SetXForwarded()
+
+			if xfp != "" {
+				req.Out.Header.Set("X-Forwarded-Proto", xfp)
+			}
 		},
 		FlushInterval: flush,
 		Transport:     tr,
